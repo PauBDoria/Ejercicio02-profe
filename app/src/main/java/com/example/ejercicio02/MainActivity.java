@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final int EDIT_NOTA = 2;
     private final int AGREGAR_NOTA = 1;
     private LinearLayout contenedor;
     private Button btnAgregar;
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == AGREGAR_NOTA && resultCode == RESULT_OK){
             if (data != null){
-                Nota nota = data.getExtras().getParcelable("nota");
+                final Nota nota = data.getExtras().getParcelable("nota");
                 listaNotas.add(nota);
                 final int posicion= listaNotas.size()-1;
 
@@ -60,7 +61,12 @@ public class MainActivity extends AppCompatActivity {
                 txtTitulo.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        Bundle bundle = new Bundle();
+                        bundle.putParcelable("nota",nota);
+                        bundle.putInt("pos",posicion);
+                        Intent intent=new Intent(MainActivity.this, activityEditNota.class);
+                        intent.putExtras(bundle);
+                        startActivityForResult(intent, EDIT_NOTA);
                     }
                 });
                 Button button = new Button(this);
@@ -82,12 +88,21 @@ public class MainActivity extends AppCompatActivity {
                 contenedor.addView(contenedorNota);
             }
         }
+        if (requestCode == EDIT_NOTA && resultCode == RESULT_OK){
+            if (data!= null){
+                Nota nota = data.getExtras().getParcelable("nota");
+                int posicion = data.getExtras().getInt("pos");
+                listaNotas.get(posicion).setTitulo(nota.getTitulo());
+                listaNotas.get(posicion).setContenido(nota.getContenido());
+                repintaNotas();
+            }
+        }
     }
 
     private void repintaNotas() {
         contenedor.removeAllViews();
         for (int i = 0; i <listaNotas.size() ; i++) {
-            Nota nota = listaNotas.get(i);
+            final Nota nota = listaNotas.get(i);
             final int posicion= i;
             TextView txtTitulo = new TextView(this);
             txtTitulo.setText(nota.getTitulo());
@@ -99,6 +114,12 @@ public class MainActivity extends AppCompatActivity {
             txtTitulo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("nota",nota);
+                    bundle.putInt("pos",posicion);
+                    Intent intent=new Intent(MainActivity.this, activityEditNota.class);
+                    intent.putExtras(bundle);
+                    startActivityForResult(intent, EDIT_NOTA);
 
                 }
             });
