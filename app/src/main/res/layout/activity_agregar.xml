@@ -13,8 +13,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name" />
+        android:hint="Titulo"
+        android:inputType="textPersonName" />
 
     <EditText
         android:id="@+id/txtContenidoAgregar"
@@ -22,8 +22,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name" />
+        android:hint="Contenido"
+        android:inputType="textPersonName" />
 
     <Button
         android:id="@+id/btnGuardarAgregar"
